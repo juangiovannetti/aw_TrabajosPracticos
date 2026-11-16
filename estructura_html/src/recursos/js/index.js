@@ -3,6 +3,7 @@ import { obtenerPaquetes } from "./datos.js" //nombrada
 import { iniciarCatalogo } from "./catalogo.js" //nombrada
 import { iniciarFormulario } from "./formulario.js"
 import { iniciarDetalle } from "./detalle.js" //nombrada
+import { iniciarCarrito } from "./carrito.js" //nombrada
 
 // Referenciamos elementos del DOM a partir de su ID
 // Los 5 HTML cargan este archivo, por eso cada elemento se usa solo si existe en la página abierta
@@ -13,6 +14,7 @@ const contenedorPaquetes = document.getElementById("contenedor-paquetes")
 const formFiltros = document.getElementById("form-filtros")
 const formReserva = document.getElementById("form-reserva")
 const contenedorDetalle = document.getElementById("contenedor-detalle")
+const contenedorCarrito = document.getElementById("contenedor-carrito")
 
 // Condicional para activar el MENÚ HAMBURGUESA 
 if (encabezado && botonAbrir && botonCerrar) {
@@ -53,20 +55,19 @@ if (formReserva) {
     iniciarFormulario(formReserva)
 }
 
-// DETALLE (solo existe en detalle.html)
-if (contenedorDetalle) {
+// DETALLE Y CARRITO (solo existen en detalle.html)
+if (contenedorDetalle && contenedorCarrito) {
     const paquetes = await obtenerPaquetes()
 
     if (paquetes) {
         const paquete = iniciarDetalle(contenedorDetalle, paquetes)
 
-        // El botón se busca DESPUÉS de dibujar el detalle, porque lo crea detalle.js
+        // El botón y el campo se buscan DESPUÉS de dibujar el detalle, porque los crea detalle.js
         const botonAgregar = document.getElementById("boton-agregar")
-        if (paquete && botonAgregar) {
-            // Escuchador: por ahora avisa por consola (en el paso siguiente se guarda en localStorage)
-            botonAgregar.addEventListener('click', (evento) => {
-                console.log("Se ha agregado al carrito:", paquete.nombre)
-            })
+        const campoPersonas = document.getElementById("id-personas")
+
+        if (paquete && botonAgregar && campoPersonas) {
+            iniciarCarrito(contenedorCarrito, paquete, botonAgregar, campoPersonas)
         }
     } else {
         contenedorDetalle.innerHTML = '<p>No se pudo cargar el paquete. Intentá de nuevo más tarde.</p>'

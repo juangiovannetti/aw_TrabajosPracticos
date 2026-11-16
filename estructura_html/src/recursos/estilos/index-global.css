@@ -382,3 +382,18 @@ legend{
         height: 48px;
     }
 }
+
+/*Aviso flotante (notificaciones del carrito y la reserva)*/
+.aviso{
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #317F7A;
+    color: #FFFFFF;
+    padding: 0.8rem 1.4rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    font-weight: 700;
+    z-index: 100;
+}
