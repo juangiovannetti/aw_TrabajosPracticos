@@ -1,0 +1,57 @@
+# Workflow de CI/CD de Nómada Viajes
+# En cada push a main: 1) corre los tests unitarios  2) si pasan, despliega en Vercel
+name: CI/CD Nómada Viajes
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ---------- CI: integración continua ----------
+  test:
+    name: Tests unitarios (node:test)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Correr los tests
+        working-directory: estructura_html
+        run: node --test "tests/**/*.test.js"
+
+  # ---------- CD: despliegue continuo ----------
+  deploy:
+    name: Despliegue en Vercel
+    needs: test                          # solo arranca si el job "test" terminó bien
+    if: github.event_name == 'push'      # en un pull request solo se prueba, no se publica
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Descargar el código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instalar Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Traer la configuración del proyecto de Vercel
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Preparar el sitio
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Publicar en producción
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

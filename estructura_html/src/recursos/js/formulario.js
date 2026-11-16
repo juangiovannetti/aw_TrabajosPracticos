@@ -169,5 +169,5 @@ function iniciarFormulario(formulario, alEnviar) {
     })
 }
 
-export { iniciarFormulario }
+export { iniciarFormulario, validarEmail, validarDni }
 export default iniciarFormulario
