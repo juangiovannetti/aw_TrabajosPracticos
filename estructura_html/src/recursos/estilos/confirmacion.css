@@ -47,3 +47,16 @@
         text-align: center;
     }   
 }
+
+
+/*Lista de paquetes reservados*/
+.contenido-principal .confirmacion-reserva .resumen-items{
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.contenido-principal .confirmacion-reserva .resumen-items li{
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #E3E0D8;
+}

@@ -99,7 +99,8 @@ function limpiarError(campo) {
 
 // Función principal 
 
-function iniciarFormulario(formulario) {
+// alEnviar es una función que recibe los datos cuando el formulario está bien completado
+function iniciarFormulario(formulario, alEnviar) {
     // Referenciamos los campos a partir de su ID
     const campoNombre = formulario.querySelector("#nombre")
     const campoDni = formulario.querySelector("#dni")
@@ -144,6 +145,9 @@ function iniciarFormulario(formulario) {
 
     // Escuchador: al enviar se validan todos los campos
     formulario.addEventListener("submit", (evento) => {
+        // Siempre se frena el envío tradicional: la reserva se envía con JavaScript
+        evento.preventDefault()
+
         let primerCampoConError = null
 
         validaciones.forEach((item) => {
@@ -153,12 +157,15 @@ function iniciarFormulario(formulario) {
             }
         })
 
-        // Si hay errores se frena el envío y se lleva al usuario al primer campo con error
+        // Si hay errores se lleva al usuario al primer campo con error
         if (primerCampoConError !== null) {
-            evento.preventDefault()
             primerCampoConError.focus()
+            return
         }
-        // Si todo está bien no se frena: el formulario sigue a confirmacion.html
+
+        // Si todo está bien se arma un objeto con los datos y se entrega a quien llamó
+        const datos = Object.fromEntries(new FormData(formulario))
+        alEnviar(datos)
     })
 }
 
