@@ -2,7 +2,7 @@
 import { obtenerCarrito, calcularTotal, vaciarCarrito, formatearPrecio } from "./carrito.js"
 
 // Número de WhatsApp de la agencia (549 + característica + número, sin 0 ni 15)
-const NUMERO_WHATSAPP = "5493511234567"
+const NUMERO_WHATSAPP = "5493515950817"
 const CLAVE_RESERVA = "reservaNomada"
 
 // Arma un número de reserva a partir de la fecha y hora actual: NV-2026-482193
